@@ -1,0 +1,68 @@
+# Dependencies
+node_modules/
+
+# Build and test output
+dist/
+coverage/
+.vitest/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Environment and local secrets
+.env
+.env.*
+!.env.example
+
+# Local app/config files that may contain accounts, stream keys, or machine paths
+config/accounts.json
+scripts/tiktok-keys.json
+scripts/twitch-api.json
+scripts/test-twitch.json
+scripts/stream-health-checker.config.json
+scripts/stream-fanout-runner.config.json
+scripts/deepfake-worker-runner.config.json
+
+# Keep templates/examples
+!scripts/*.example.json
+!scripts/*.example-*.json
+
+# Browser/profile state
+profiles/
+playwright/.cache/
+playwright-report/
+test-results/
+.auth/
+
+# Python caches and virtual environments
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+venv*/
+
+# Generated media/output artifacts
+*.mp4
+*.flv
+*.mkv
+*.mov
+*.avi
+*.webm
+*.m3u8
+*.tsv
+
+# OS/editor files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo

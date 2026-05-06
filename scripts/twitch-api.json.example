@@ -1,0 +1,5 @@
+{
+  "clientId": "your_twitch_app_client_id",
+  "clientSecret": "your_twitch_app_client_secret",
+  "userLogins": ["votuanbk232"]
+}

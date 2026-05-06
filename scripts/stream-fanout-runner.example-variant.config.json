@@ -1,0 +1,47 @@
+{
+  "_comment": "Phase 2 example config demonstrating the variant schema. Run with: node stream-fanout-runner.js --config stream-fanout-runner.example-variant.config.json. Overlay PNGs are 1x1 transparent placeholders until phase 6 replaces them with visible logos.",
+  "ffmpegPath": "C:\\Users\\LENOVO\\Downloads\\ffmpeg-8.1-essentials_build\\ffmpeg-8.1-essentials_build\\bin\\ffmpeg.exe",
+  "source": "rtmp://127.0.0.1/live/stream",
+  "loopbackBase": "rtmp://127.0.0.1",
+  "mode": "multi",
+  "antiDuplicate": {
+    "enabled": true,
+    "preflightBenchmark": true,
+    "maxStreams": 5
+  },
+  "destinations": [
+    {
+      "url": "rtmp://127.0.0.1/fan1",
+      "variant": {
+        "resolution": "1920x1080",
+        "bitrate": "3000k",
+        "crop": "iw*0.98:ih*0.98",
+        "startOffsetSec": 0,
+        "overlayImage": "./overlays/brand-1.png",
+        "overlayPos": "20:20"
+      }
+    },
+    {
+      "url": "rtmp://127.0.0.1/fan2",
+      "variant": {
+        "resolution": "1600x900",
+        "bitrate": "2500k",
+        "crop": "iw*0.96:ih*0.96",
+        "startOffsetSec": 3,
+        "overlayImage": "./overlays/brand-2.png",
+        "overlayPos": "20:20"
+      }
+    },
+    {
+      "url": "rtmp://127.0.0.1/fan3",
+      "variant": {
+        "resolution": "1280x720",
+        "bitrate": "2000k",
+        "crop": "iw*0.94:ih*0.94",
+        "startOffsetSec": 6,
+        "overlayImage": "./overlays/brand-3.png",
+        "overlayPos": "20:20"
+      }
+    }
+  ]
+}

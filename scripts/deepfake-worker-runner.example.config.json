@@ -1,0 +1,48 @@
+{
+  "_comment": "Copy this file to deepfake-worker-runner.config.json and replace deepLiveCamRoot/avatar paths. Prefer destinationUrlEnv for real TikTok keys so secrets are not stored in this file.",
+  "pythonPath": "python",
+  "deepLiveCamRoot": "C:\\path\\to\\Deep-Live-Cam",
+  "ffmpegPath": "ffmpeg",
+  "source": "rtmp://127.0.0.1/live/source",
+  "executionProvider": "cuda",
+  "executionThreads": 2,
+  "statusIntervalMs": 30000,
+  "restartPolicy": {
+    "enabled": true,
+    "maxRestarts": 3,
+    "delayMs": 5000
+  },
+  "disclosure": {
+    "enabled": true,
+    "text": "AI avatar"
+  },
+  "workers": [
+    {
+      "id": "avatar-1",
+      "avatarPath": "../avatars/avatar-1.png",
+      "destinationUrlEnv": "TIKTOK_RTMP_1",
+      "resolution": "1280x720",
+      "fps": 30,
+      "bitrate": "3000k",
+      "startOffsetSec": 0
+    },
+    {
+      "id": "avatar-2",
+      "avatarPath": "../avatars/avatar-2.png",
+      "destinationUrlEnv": "TIKTOK_RTMP_2",
+      "resolution": "1280x720",
+      "fps": 30,
+      "bitrate": "3000k",
+      "startOffsetSec": 5
+    },
+    {
+      "id": "avatar-3",
+      "avatarPath": "../avatars/avatar-3.png",
+      "destinationUrlEnv": "TIKTOK_RTMP_3",
+      "resolution": "1280x720",
+      "fps": 30,
+      "bitrate": "3000k",
+      "startOffsetSec": 10
+    }
+  ]
+}

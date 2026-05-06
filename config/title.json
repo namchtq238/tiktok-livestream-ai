@@ -1,0 +1,5 @@
+{
+  "defaultTitle": "Live Stream",
+  "titleTemplate": "{account} | Live #{index}",
+  "allowOverride": true
+}
