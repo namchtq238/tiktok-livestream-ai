@@ -201,6 +201,13 @@ export function validateConfig(config) {
         errors.push(`${prefix}.startOffsetSec must be a number 0..120`);
       }
     }
+
+    if (worker.audioSyncMs !== undefined) {
+      const sync = worker.audioSyncMs;
+      if (!Number.isInteger(sync) || sync < -10000 || sync > 10000) {
+        errors.push(`${prefix}.audioSyncMs must be an integer -10000..10000`);
+      }
+    }
   }
 
   if (!Number.isInteger(config.executionThreads) || config.executionThreads < 1 || config.executionThreads > 16) {

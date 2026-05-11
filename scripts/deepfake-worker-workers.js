@@ -46,6 +46,7 @@ export function buildWorkerArgs(config, worker) {
 
   if (worker.manyFaces) args.push("--many-faces");
   if (worker.encoder) args.push("--encoder", worker.encoder);
+  if (worker.audioSyncMs !== undefined) args.push("--audio-sync-ms", String(worker.audioSyncMs));
   return args;
 }
 

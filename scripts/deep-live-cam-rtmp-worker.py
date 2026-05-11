@@ -38,6 +38,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--execution-provider", default="cuda")
     parser.add_argument("--execution-threads", type=int, default=2)
     parser.add_argument("--encoder", default="auto")
+    parser.add_argument("--audio-sync-ms", type=int, default=0)
     parser.add_argument("--disclosure-text", default="AI avatar")
     parser.add_argument("--no-disclosure", action="store_true")
     parser.add_argument("--many-faces", action="store_true")
@@ -195,6 +196,11 @@ def build_reader_cmd(args: argparse.Namespace, width: int, height: int) -> List[
 def build_writer_cmd(args: argparse.Namespace, width: int, height: int, encoder: str) -> List[str]:
     gop = max(2, args.fps * 2)
     fmt = output_format(args.output)
+    audio_filter = "asetpts=PTS-STARTPTS"
+    if args.audio_sync_ms > 0:
+        audio_filter = f"adelay={args.audio_sync_ms}:all=1,asetpts=PTS-STARTPTS"
+    elif args.audio_sync_ms < 0:
+        audio_filter = f"atrim=start={abs(args.audio_sync_ms) / 1000:.3f},asetpts=PTS-STARTPTS"
     cmd = [
         args.ffmpeg,
         "-hide_banner",
@@ -211,21 +217,26 @@ def build_writer_cmd(args: argparse.Namespace, width: int, height: int, encoder:
         str(args.fps),
         "-i",
         "-",
+        "-fflags",
+        "nobuffer",
+        "-flags",
+        "low_delay",
+        "-thread_queue_size",
+        "512",
+        "-i",
+        args.source,
     ]
 
-    if is_stream_output(args.output):
-        cmd.extend(
-            [
-                "-f",
-                "lavfi",
-                "-i",
-                "anullsrc=channel_layout=stereo:sample_rate=44100",
-            ]
-        )
-
-    cmd.extend(["-map", "0:v:0"])
-    if is_stream_output(args.output):
-        cmd.extend(["-map", "1:a:0"])
+    cmd.extend(
+        [
+            "-filter_complex",
+            f"[1:a:0]{audio_filter}[aout]",
+            "-map",
+            "0:v:0",
+            "-map",
+            "[aout]",
+        ]
+    )
     cmd.extend(["-c:v", encoder])
 
     if encoder == "h264_nvenc":
@@ -261,10 +272,9 @@ def build_writer_cmd(args: argparse.Namespace, width: int, height: int, encoder:
             ]
         )
 
-    if is_stream_output(args.output):
-        cmd.extend(["-c:a", "aac", "-b:a", "128k", "-ar", "44100", "-ac", "2", "-shortest"])
+    cmd.extend(["-c:a", "aac", "-b:a", "128k", "-ar", "44100", "-ac", "2", "-shortest"])
     if fmt == "mp4":
-        cmd.extend(["-movflags", "+faststart", "-an", "-f", "mp4", args.output])
+        cmd.extend(["-movflags", "+frag_keyframe+empty_moov+default_base_moof", "-f", "mp4", args.output])
     else:
         cmd.extend(["-f", "flv", args.output])
     return cmd

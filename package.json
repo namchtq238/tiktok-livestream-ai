@@ -7,6 +7,7 @@
     "build": "tsc",
     "watch": "tsc --watch",
     "deepfake:run": "node scripts/deepfake-worker-runner.js --config scripts/deepfake-worker-runner.config.json",
+    "deepfake:run:one": "node scripts/deepfake-worker-runner.js --config scripts/deepfake-worker-runner.config.json --worker avatar-1",
     "deepfake:example": "node scripts/deepfake-worker-runner.js --config scripts/deepfake-worker-runner.example.config.json",
     "test": "vitest --run",
     "test:watch": "vitest"
